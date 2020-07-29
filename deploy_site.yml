@@ -9,7 +9,7 @@
     
     tasks:
         -   name: Clean and prepare source folder
-            include_tasks: clean_prepare_folder.yml
+            include_tasks: tasks/clean_prepare_folder.yml
         
         -   name: Copy deployment files to host
             win_copy:
@@ -29,4 +29,4 @@
                 remote_src: true 
         
         -   name: Deploy site
-            include_tasks: deploy.yml
+            include_tasks: tasks/deploy.yml
