@@ -1,0 +1,3 @@
+---
+-   name: Deploy all Rocketor components
+    hosts: all
