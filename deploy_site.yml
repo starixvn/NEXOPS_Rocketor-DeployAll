@@ -36,11 +36,8 @@
                 remote_src: true 
         
         -   name: Deploy site
-            win_robocopy:
-                src: '{{source_folder}}'
-                dest: '{{site_folder}}'
-                recurse: yes
-                purge: yes
+            win_command: |
+                'C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe' -verb:sync -useChecksum 
+                -source:contentPath="{{source_folder}}" -dest:contentPath="{{site_folder}}" 
+                -skip:objectName=filePath,absolutePath=.*\.ruleset
         
-        
-
