@@ -4,19 +4,12 @@
     vars:
         root_build_path: 'D:\Builds'
         source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Site"
-        site_folder: 'D:\Tools\Rocketor\Rocketor-UAT'
+        dest_folder: 'D:\Tools\Rocketor\Rocketor-UAT'
         transform_config_name: '.UAT'
     
     tasks:
-        -   name: Delete all files and sub folders if source folder exists
-            win_file:
-                path: '{{source_folder}}'
-                state: absent
-
-        -   name: Create if source folder not exist
-            win_file:
-                path: '{{source_folder}}'
-                state: directory
+        -   name: Clean and prepare source folder
+            include_tasks: clean_prepare_folder.yml
         
         -   name: Copy deployment files to host
             win_copy:
@@ -36,8 +29,4 @@
                 remote_src: true 
         
         -   name: Deploy site
-            win_command: >
-                "C:\\Program Files\\IIS\\Microsoft Web Deploy V3\\msdeploy.exe" -verb:sync
-                -source:contentPath="{{source_folder}}" -dest:contentPath="{{site_folder}}"
-                -skip:objectName=filePath,absolutePath=.*\.ruleset -useChecksum
-        
+            include_tasks: deploy.yml

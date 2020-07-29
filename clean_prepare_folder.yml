@@ -1,0 +1,9 @@
+-   name: Delete all files and sub folders if source folder exists
+    win_file:
+        path: '{{source_folder}}'
+        state: absent
+
+-   name: Create if source folder not exist
+    win_file:
+        path: '{{source_folder}}'
+        state: directory
