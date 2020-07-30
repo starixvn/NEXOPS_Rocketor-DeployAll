@@ -1,11 +1,11 @@
 ---
--   name: Deploy Rocketor site
+-   name: Deploy Rocketor Proxy
     hosts: all
     vars:
-        root_build_path: 'D:\Builds'
-        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Proxy"
+        root_build_path: 'D:\Builds'        
         dest_folder: 'D:\Tools\Rocketor\Rocketor-Proxy-UAT'
         transform_config_name: '.UAT'
+        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Proxy"
     
     tasks:
         -   name: Clean and prepare source folder
@@ -22,5 +22,5 @@
                 dest: "{{source_folder}}\\Web.config"
                 remote_src: true 
         
-        -   name: Deploy site
+        -   name: Deploy Proxy
             include_tasks: tasks/deploy.yml
