@@ -26,7 +26,7 @@
                 remote_src: true
 
         -   name: Stop BuildService
-            win_command: taskkill.exe /S '{{inventory_hostname}}' /IM '{{executable_file}}' /F /T
+            win_command: 'taskkill.exe /IM {{executable_file}} /F /T'
 
         -   name: Wait for BuildService to be stopped
             win_wait_for_process:
@@ -39,7 +39,7 @@
             include_tasks: tasks/deploy.yml
 
         -   name: Start BuildService
-            win_command: schtasks /run /s '{{inventory_hostname}}' /tn '{{scheduled_task_name}}'
+            win_command: 'schtasks /run /tn {{scheduled_task_name}}'
 
         -   name: Wait for BuildService to be started
             win_wait_for_process:
