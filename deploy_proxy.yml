@@ -8,7 +8,7 @@
         source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Proxy"
     
     tasks:
-        -   name: Clean and prepare source folder
+        -   name: Include task - Clean and prepare source folder
             include_tasks: tasks/clean_prepare_folder.yml
         
         -   name: Copy deployment files to host
@@ -22,5 +22,5 @@
                 dest: "{{source_folder}}\\Web.config"
                 remote_src: true 
         
-        -   name: Deploy Proxy
+        -   name: Include task - Deploy Proxy
             include_tasks: tasks/deploy.yml

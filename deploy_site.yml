@@ -1,5 +1,5 @@
 ---
--   name: Deploy Rocketor site
+-   name: Deploy Rocketor Site
     hosts: all
     vars:
         root_build_path: 'D:\Builds'
@@ -8,7 +8,7 @@
         transform_config_name: '.UAT'
     
     tasks:
-        -   name: Clean and prepare source folder
+        -   name: Include task - Clean and prepare source folder
             include_tasks: tasks/clean_prepare_folder.yml
         
         -   name: Copy deployment files to host
@@ -28,5 +28,5 @@
                 dest: "{{source_folder}}\\Web.config"
                 remote_src: true 
         
-        -   name: Deploy site
+        -   name: Include task - Deploy Site
             include_tasks: tasks/deploy.yml

@@ -1,4 +1,4 @@
--   name: Deploy site
+-   name: Deploying
     win_command: >
         "C:\\Program Files\\IIS\\Microsoft Web Deploy V3\\msdeploy.exe" -verb:sync
         -source:contentPath="{{source_folder}}" -dest:contentPath="{{dest_folder}}"
