@@ -1,0 +1,51 @@
+---
+-   name: Deploy Rocketor Build Service
+    hosts: all
+    vars:
+        root_build_path: 'D:\Builds'        
+        dest_folder: 'D:\Tools\Fanex.WebDeployment.BuildService'
+        transform_config_name: '.UAT'
+        scheduled_task_name: UAT-Fanex.WebDeployment.BuildService
+        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\BuildService"
+        executable_name: Fanex.WebDeployment.BuildService
+        executable_file: '{{executable_name}}.exe'
+    
+    tasks:
+        -   name: Include task - Clean and prepare source folder
+            include_tasks: tasks/clean_prepare_folder.yml
+        
+        -   name: Copy deployment files to host
+            win_copy:
+                src: _deploy/build_service/
+                dest: '{{source_folder}}'
+
+        -   name: 'Transform {{executable_file}}.config'
+            win_copy:
+                src: "{{source_folder}}\\{{executable_file}}{{transform_config_name}}.config"
+                dest: "{{source_folder}}\\{{executable_file}}.config"
+                remote_src: true
+
+        -   name: Stop BuildService
+            win_command: taskkill.exe /S '{{inventory_hostname}}' /IM '{{executable_file}}' /F /T
+
+        -   name: Wait for BuildService to be stopped
+            win_wait_for_process:
+                process_name_exact: '{{executable_name}}'
+                state: absent
+                timeout: 10
+                sleep: 1
+        
+        -   name: Include task - Deploy Build Service
+            include_tasks: tasks/deploy.yml
+
+        -   name: Start BuildService
+            win_command: schtasks /run /s '{{inventory_hostname}}' /tn '{{scheduled_task_name}}'
+
+        -   name: Wait for BuildService to be started
+            win_wait_for_process:
+                process_name_exact: '{{executable_name}}'
+                state: present
+                timeout: 5
+                sleep: 1
+
+        

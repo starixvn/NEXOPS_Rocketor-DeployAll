@@ -13,7 +13,7 @@
         
         -   name: Copy deployment files to host
             win_copy:
-                src: _deploy/Api/
+                src: _deploy/api/
                 dest: '{{source_folder}}'
 
         -   name: Transform Web.config
