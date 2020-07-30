@@ -1,0 +1,26 @@
+---
+-   name: Deploy Rocketor Api
+    hosts: all
+    vars:
+        root_build_path: 'D:\Builds'        
+        dest_folder: 'D:\Tools\Rocketor\Rocketor-Api-UAT'
+        transform_config_name: '.UAT'
+        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Api"
+    
+    tasks:
+        -   name: Include task - Clean and prepare source folder
+            include_tasks: tasks/clean_prepare_folder.yml
+        
+        -   name: Copy deployment files to host
+            win_copy:
+                src: _deploy/Api/
+                dest: '{{source_folder}}'
+
+        -   name: Transform Web.config
+            win_copy:
+                src: "{{source_folder}}\\Web{{transform_config_name}}.config"
+                dest: "{{source_folder}}\\Web.config"
+                remote_src: true
+        
+        -   name: Include task - Deploy Api
+            include_tasks: tasks/deploy.yml
