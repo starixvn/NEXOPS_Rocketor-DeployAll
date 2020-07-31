@@ -1,0 +1,26 @@
+---
+-   name: Deploy Rocketor Build Service Linux
+    hosts: all
+    vars:
+        transform_config_name: '.UAT'
+        source_folder: '_deploy/build_service_linux'
+        dest_folder: '/var/www/Rocketor.BuildService.Linux'
+        service_name: Rocketor.BuildService.Linux.service
+    
+    tasks:        
+        -   name: 'Transform appsettings.json'
+            copy:
+                src: "{{source_folder}}/appsettings{{transform_config_name}}.json"
+                dest: "{{source_folder}}/appsettings.json"
+
+        -   name: Deploy Build Service Linux
+            synchronize:
+                src: '{{source_folder}}/'
+                dest: '{{dest_folder}}'
+
+        -   name: Restart Build Service Linux
+            systemd:
+                name: '{{service_name}}'
+                state: restarted
+                scope: system 
+        
