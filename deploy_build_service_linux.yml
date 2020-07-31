@@ -12,6 +12,7 @@
             copy:
                 src: "{{source_folder}}/appsettings{{transform_config_name}}.json"
                 dest: "{{source_folder}}/appsettings.json"
+            delegate_to: localhost
 
         -   name: Deploy Build Service Linux
             synchronize:
