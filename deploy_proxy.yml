@@ -4,7 +4,7 @@
     vars:
         root_build_path: 'D:\Builds'        
         dest_folder: 'D:\Tools\Rocketor\Rocketor-Proxy-UAT'
-        transform_config_name: '.UAT'
+        transform_config_name: '.UAT'      
         source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Proxy"
     
     tasks:
@@ -18,7 +18,7 @@
 
         -   name: Transform Web.config
             win_copy:
-                src: "{{source_folder}}\\Web{{transform_config_name}}.config"
+                src: "{{source_folder}}\\Web{{transform_config_name}}{{transform_suffix}}.config"
                 dest: "{{source_folder}}\\Web.config"
                 remote_src: true 
         
