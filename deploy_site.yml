@@ -30,3 +30,6 @@
         
         -   name: Include task - Deploy Site
             include_tasks: tasks/deploy.yml
+
+        -   name: Recycle Site
+            win_command: '%systemroot%\system32\inetsrv\appcmd recycle apppool Rocketor.Site'

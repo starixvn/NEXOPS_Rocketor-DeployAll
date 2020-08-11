@@ -1,6 +1,6 @@
 ---
 -   name: Deploy Rocketor Proxy
-    hosts: all
+    hosts: all    
     vars:
         root_build_path: 'D:\Builds'        
         dest_folder: 'D:\Tools\Rocketor\Rocketor-Proxy-UAT'
