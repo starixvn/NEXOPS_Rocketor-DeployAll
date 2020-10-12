@@ -1,0 +1,40 @@
+---
+-   name: Deploy Rocketor Build Service MAC
+    hosts: all
+    vars:
+        transform_config_name: '.UAT'
+        source_folder: '_deploy/build_service_mac'
+        dest_folder: '/Users/rocketor.vn/Rocketor.BuildService.MAC'
+        service_name: com.rocketor.buildservice
+    
+    tasks:        
+        -   name: Transform appsettings.json
+            copy:
+                src: "{{source_folder}}/appsettings{{transform_config_name}}.json"
+                dest: "{{source_folder}}/appsettings.json"
+            delegate_to: localhost
+
+        -   name: Deploy Build Service MAC
+            synchronize:
+                src: '{{source_folder}}/'
+                dest: '{{dest_folder}}'
+                checksum: yes 
+                delete: yes
+                recursive: yes
+
+        -   name: Set permission mode 0755
+            file:
+                path: '{{dest_folder}}'
+                state: directory
+                mode: '0755'
+                recurse: yes
+
+        -   name: Stop to restart Build Service MAC
+            command: launchctl stop {{service_name}}
+            become: yes
+                
+        -   name: Populate service facts
+            service_facts: 
+        -   debug:
+                var: ansible_facts.services['{{service_name}}']
+        
