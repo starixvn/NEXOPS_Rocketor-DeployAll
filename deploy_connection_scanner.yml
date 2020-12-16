@@ -1,0 +1,51 @@
+---
+-   name: Deploy Rocketor Connection Scanner
+    hosts: all
+    vars:
+        root_build_path: 'D:\Builds'        
+        dest_folder: 'D:\Tools\Rocketor\Rocketor.ConnectionStringScanner'
+        transform_config_name: '.UAT'
+        service_name: Fanex.Rocketor.ConnectionStringScanner
+        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\ConnectionStringScanner"
+        executable_name: Fanex.Rocketor.ConnectionStringScanner
+        executable_file: '{{executable_name}}.exe'
+    
+    tasks:
+        -   name: Include task - Clean and prepare source folder
+            include_tasks: tasks/clean_prepare_folder.yml
+        
+        -   name: Copy deployment files to host
+            win_copy:
+                src: _deploy/connection_scanner/
+                dest: '{{source_folder}}'
+
+        -   name: 'Transform {{executable_file}}.config'
+            win_copy:
+                src: "{{source_folder}}\\{{executable_file}}{{transform_config_name}}.config"
+                dest: "{{source_folder}}\\{{executable_file}}.config"
+                remote_src: true
+
+        -   name: Stop ConnectionStringScanner
+            win_command: 'taskkill.exe /IM {{executable_file}} /F /T'
+
+        -   name: Wait for ConnectionStringScanner to be stopped
+            win_wait_for_process:
+                process_name_exact: '{{executable_name}}'
+                state: absent
+                timeout: 10
+                sleep: 1
+        
+        -   name: Include task - Deploy Connection Scanner
+            include_tasks: tasks/deploy.yml
+
+        -   name: Start ConnectionStringScanner
+            win_command: 'sc start {{service_name}}'
+
+        -   name: Wait for ConnectionStringScanner to be started
+            win_wait_for_process:
+                process_name_exact: '{{executable_name}}'
+                state: present
+                timeout: 5
+                sleep: 1
+
+        
