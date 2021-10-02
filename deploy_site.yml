@@ -7,6 +7,7 @@
         dest_folder: 'D:\Tools\Rocketor\Rocketor-UAT'
         transform_config_name: '.UAT'
         org_name: nexcel #luminet
+        site_name: Rocketor.Site
     
     tasks:
         -   name: Include task - Clean and prepare source folder
@@ -33,4 +34,4 @@
             include_tasks: tasks/deploy.yml
 
         -   name: Recycle Site
-            win_shell: "C:\\Windows\\system32\\inetsrv\\appcmd recycle apppool Rocketor.Site"
+            win_shell: "C:\\Windows\\system32\\inetsrv\\appcmd recycle apppool {{site_name}}"
