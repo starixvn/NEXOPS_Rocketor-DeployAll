@@ -3,10 +3,10 @@
     hosts: all
     vars:
         root_build_path: 'D:\Builds'
-        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Site"
-        dest_folder: 'D:\Tools\Rocketor\Rocketor-UAT'
-        transform_config_name: '.UAT'
         org_name: nexcel #luminet
+        source_folder: "{{root_build_path}}\\Compiled\\NEXOPS\\Rocketor\\Site_{{org_name}}"
+        dest_folder: 'D:\Tools\Rocketor\Rocketor-UAT'
+        transform_config_name: '.UAT'        
         site_name: Rocketor.Site
     
     tasks:
